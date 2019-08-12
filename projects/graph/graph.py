@@ -3,46 +3,118 @@ Simple graph implementation
 """
 from util import Stack, Queue  # These may come in handy
 
+# Vertex
+# Identiier
+# List of edges
+
+
 class Graph:
     """Represent a graph as a dictionary of vertices mapping labels to edges."""
+
     def __init__(self):
         self.vertices = {}
+
     def add_vertex(self, vertex):
         """
         Add a vertex to the graph.
         """
-        pass  # TODO
+        if self.vertices.get(vertex, None) is None:
+            self.vertices[vertex] = set()
+        else:
+            print("Warning, Vertex already exists")
+
     def add_edge(self, v1, v2):
         """
         Add a directed edge to the graph.
         """
-        pass  # TODO
+        if v1 in self.vertices and v2 in self.vertices:
+            self.vertices[v1].add(v2)
+        else:
+            raise IndexError("That vertex does not exist!")
+
     def bft(self, starting_vertex):
         """
         Print each vertex in breadth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Create an empty set to store visited nodes
+        visited = set()
+        # Create an empty Queue and enqueue the starting vertex
+        q = Queue()
+        q.enqueue(starting_vertex)
+        # While the queue is not empty...
+        while q.size() > 0:
+            # Dequeue the first vertex from the queue
+            vertex = q.dequeue()
+            # If that vertex has not been visited...
+            if vertex not in visited:
+                # Mark it as visited
+                visited.add(vertex)
+                # Then add all of its neighbors to the back of the queue
+                print(vertex)
+                for neighbor in self.vertices[vertex]:
+                    q.enqueue(neighbor)
+
     def dft(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
+        # Create an empty set to store visited nodes
+        visited = set()
+        # Create an empty stack and push the starting vertex
+        s = Stack()
+        s.push(starting_vertex)
+        # While the stack is not empty...
+        while s.size() > 0:
+            # Dequeue the first vertex from the stack
+            vertex = s.pop()
+            # If that vertex has not been visited...
+            if vertex not in visited:
+                # Mark it as visited
+                visited.add(vertex)
+                # Then add all of its neighbors to the back of the stack
+                print(vertex)
+                for neighbor in self.vertices[vertex]:
+                    s.push(neighbor)
+
     def dft_recursive(self, starting_vertex):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass  # TODO
+        def visit(vertex, visited=set()):
+            if vertex not in visited:
+                print(vertex)
+                visited.add(vertex)
+                for neighbor in self.vertices[vertex]:
+                    visit(neighbor)
+
+        visit(starting_vertex)
+
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        visited = set()
+        path = []
+        q = Queue()
+        q.enqueue(starting_vertex)
+
+        while q.size() > 0:
+            vertex = q.dequeue()
+
+            if vertex not in visited:
+                # Do the stuff
+                visited.add(vertex)
+                for neighbor in self.vertices[vertex]:
+                    q.enqueue(neighbor)
+
+        return "I have visited all the queues"
+
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
@@ -50,9 +122,6 @@ class Graph:
         depth-first order.
         """
         pass  # TODO
-
-
-
 
 
 if __name__ == '__main__':
