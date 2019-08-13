@@ -50,7 +50,7 @@ class SocialGraph:
 
         # Add users
         for i in range(0, numUsers):
-            self.addUSer(f'Brian{i}')
+            self.addUser(f'Brian{i}')
 
         # Create friendships
         possibleFriendships = []
@@ -74,6 +74,24 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        for user in self.users.keys():
+            if user is not userID:
+                seen = set()
+                s = []
+                s.append([userID])
+
+                while len(s) > 0:
+                    path = s.pop(0)
+                    current_user = path[-1]
+
+                    if current_user not in seen:
+                        if current_user == user:
+                            visited[user] = path
+
+                        seen.add(current_user)
+                        for friend in self.friendships[current_user]:
+                            s.append(path + [friend])
+
         return visited
 
 
