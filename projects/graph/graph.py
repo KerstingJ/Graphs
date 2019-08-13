@@ -89,7 +89,7 @@ class Graph:
                 print(vertex)
                 visited.add(vertex)
                 for neighbor in self.vertices[vertex]:
-                    visit(neighbor)
+                    visit(neighbor, visited)
 
         visit(starting_vertex)
 
@@ -99,22 +99,29 @@ class Graph:
         starting_vertex to destination_vertex in
         breath-first order.
         """
+
+        # visited holds Node that has been visited as well as the path to get there
         visited = set()
-        path = []
+        # Queue will hold a tuple (currentVertex, path)
         q = Queue()
-        q.enqueue(starting_vertex)
+        q.enqueue([starting_vertex])
 
         while q.size() > 0:
-            vertex = q.dequeue()
-
+            # Split queue into vertex and path
+            path = q.dequeue()
+            vertex = path[-1]
+            # if vertex has not been visited or if it the starting_vertex
             if vertex not in visited:
-                # Do the stuff
+                # add vertex to visited
                 visited.add(vertex)
+                # if it is the vertex we are looking for return the path
+                if vertex == destination_vertex:
+                    return path
+                # add neighbors to stack
                 for neighbor in self.vertices[vertex]:
-                    q.enqueue(neighbor)
+                    q.enqueue(path + [neighbor])
 
-        # Oops
-        return "I have visited all the queues"
+        return None
 
     def dfs(self, starting_vertex, destination_vertex):
         """
@@ -122,7 +129,22 @@ class Graph:
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        visited = set()
+        s = Stack()
+        s.push([starting_vertex])
+
+        while s.size() > 0:
+            path = s.pop()
+            vertex = path[-1]
+
+            if vertex not in visited:
+                if vertex == destination_vertex:
+                    return path
+
+                visited.add(vertex)
+
+                for neighbor in self.vertices[vertex]:
+                    s.push(path + [neighbor])
 
 
 if __name__ == '__main__':
