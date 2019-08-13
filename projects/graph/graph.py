@@ -39,6 +39,7 @@ class Graph:
         """
         # Create an empty set to store visited nodes
         visited = set()
+        res = []
         # Create an empty Queue and enqueue the starting vertex
         q = Queue()
         q.enqueue(starting_vertex)
@@ -50,10 +51,11 @@ class Graph:
             if vertex not in visited:
                 # Mark it as visited
                 visited.add(vertex)
+                res.append(vertex)
                 # Then add all of its neighbors to the back of the queue
-                print(vertex)
                 for neighbor in self.vertices[vertex]:
                     q.enqueue(neighbor)
+        print(res)
 
     def dft(self, starting_vertex):
         """
@@ -62,6 +64,7 @@ class Graph:
         """
         # Create an empty set to store visited nodes
         visited = set()
+        res = []
         # Create an empty stack and push the starting vertex
         s = Stack()
         s.push(starting_vertex)
@@ -73,10 +76,12 @@ class Graph:
             if vertex not in visited:
                 # Mark it as visited
                 visited.add(vertex)
+                res.append(vertex)
                 # Then add all of its neighbors to the back of the stack
-                print(vertex)
                 for neighbor in self.vertices[vertex]:
                     s.push(neighbor)
+
+        print(res)
 
     def dft_recursive(self, starting_vertex):
         """
@@ -84,14 +89,18 @@ class Graph:
         beginning from starting_vertex.
         This should be done using recursion.
         """
+        res = []
+
         def visit(vertex, visited=set()):
+            nonlocal res
             if vertex not in visited:
-                print(vertex)
+                res.append(vertex)
                 visited.add(vertex)
                 for neighbor in self.vertices[vertex]:
                     visit(neighbor, visited)
 
         visit(starting_vertex)
+        print(res)
 
     def bfs(self, starting_vertex, destination_vertex):
         """
