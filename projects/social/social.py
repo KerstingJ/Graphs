@@ -1,8 +1,10 @@
+import random
 
 
 class User:
     def __init__(self, name):
         self.name = name
+
 
 class SocialGraph:
     def __init__(self):
@@ -47,8 +49,19 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for i in range(0, numUsers):
+            self.addUser(f'Brian{i}')
 
         # Create friendships
+        possibleFriendships = []
+        for userID in self.users:
+            for friendID in range(userID + 1, self.lastID + 1):
+                possibleFriendships.append((userID, friendID))
+
+        friendships = random.sample(
+            possibleFriendships, (numUsers * avgFriendships) // 2)
+        for friends in friendships:
+            self.addFriendship(friends[0], friends[1])
 
     def getAllSocialPaths(self, userID):
         """
@@ -61,6 +74,24 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        for user in self.users.keys():
+            if user is not userID:
+                seen = set()
+                s = []
+                s.append([userID])
+
+                while len(s) > 0:
+                    path = s.pop(0)
+                    current_user = path[-1]
+
+                    if current_user not in seen:
+                        if current_user == user:
+                            visited[user] = path
+
+                        seen.add(current_user)
+                        for friend in self.friendships[current_user]:
+                            s.append(path + [friend])
+
         return visited
 
 
