@@ -19,8 +19,6 @@ def earliest_ancestor(ancestors, starting_node):
     for pair in ancestors:
         connect_node(graph, pair)
 
-    print(graph)
-
     # step 2: search the graph starting at the given node
 
     def dft(graph, start):
@@ -31,19 +29,18 @@ def earliest_ancestor(ancestors, starting_node):
 
         while len(stack) > 0:
             path = stack.pop()
-            print(path)
             current = path[-1]
 
             if current not in visited:
-                if len(path) > len(longest):
+                if len(path) >= len(longest):
                     longest = path
 
                 for parent in graph.get(current, []):
                     stack.append(path + [parent])
 
-        return longest
+        return longest[-1] if len(longest) > 1 else -1
 
-    print(dft(graph, starting_node))
+    return dft(graph, starting_node)
 
 
 if __name__ == "__main__":
@@ -55,4 +52,4 @@ if __name__ == "__main__":
 
     test_ancestors = [(1, 3), (2, 3), (3, 6), (5, 6), (5, 7),
                       (4, 5), (4, 8), (8, 9), (11, 8), (10, 1)]
-    earliest_ancestor(test_ancestors, start)
+    print(earliest_ancestor(test_ancestors, start))
