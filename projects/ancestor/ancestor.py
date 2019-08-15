@@ -3,7 +3,7 @@ import sys
 
 def earliest_ancestor(ancestors, starting_node):
     # take an array of ancestors,
-    # ancestor is a tuple with (x, y) x pointing to y
+    # ancestor is a tuple with (x, y) y pointing to x
 
     # step 1: build the graph
     # our graph is going to be represented by an adjacency list
@@ -25,20 +25,22 @@ def earliest_ancestor(ancestors, starting_node):
         stack = []
         visited = set()
         stack.append([start])
-        longest = []
+        longest = [-1]
 
         while len(stack) > 0:
             path = stack.pop()
             current = path[-1]
 
             if current not in visited:
-                if len(path) >= len(longest):
+                if len(path) > len(longest):
                     longest = path
+                elif len(path) == len(longest):
+                    longest = path if path[-1] < longest[-1] else longest
 
                 for parent in graph.get(current, []):
                     stack.append(path + [parent])
 
-        return longest[-1] if len(longest) > 1 else -1
+        return longest[-1]
 
     return dft(graph, starting_node)
 
